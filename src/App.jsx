@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 export const App = () => {
   const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setIncompleteTodos] = useState(["a", "b"]);
-  const [completeTodos, setCompleteTodos] = useState(["う"]);
+  const [incompleteTodos, setIncompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
 
   const onChangeTodoText = (event) => setTodoText(event.target.value);
 
@@ -35,6 +35,16 @@ export const App = () => {
     setCompleteTodos(newCompleteTodos);
   };
 
+  // 戻すボタン押下時のイベント
+  const onClickBack = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index, 1);
+    setCompleteTodos(newCompleteTodos);
+
+    const newInCompleteTodos = [...incompleteTodos, completeTodos[index]];
+    setIncompleteTodos(newInCompleteTodos);
+  };
+
   return (
     <>
       <div className="input-area">
@@ -64,12 +74,12 @@ export const App = () => {
       <div className="complete-area">
         <p className="title">完了のTODO</p>
         <ul>
-          {completeTodos.map((todo) => {
+          {completeTodos.map((todo, index) => {
             return (
               <li key={todo}>
                 <div className="list-row">
                   <p>{todo}</p>
-                  <button>戻す</button>
+                  <button onClick={() => onClickBack(index)}>戻す</button>
                 </div>
               </li>
             );
